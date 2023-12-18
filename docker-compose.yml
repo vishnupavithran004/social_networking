@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  social-networking:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:${HOST_WEB_PORT}"
+
+    volumes:
+      - .:/home/social_networking:rw
+      - static_volume:/home/social_networking/static
+    env_file:
+      - .env
+    image: social_networking
+
+    ports:
+      - ${HOST_WEB_PORT}:${HOST_WEB_PORT}
+    restart: "on-failure"
+    depends_on:
+      - social-networking-database
+    stdin_open: true
+    tty: true
+
+
+  social-networking-database:
+    image: postgres
+    volumes:
+      - social-networking-database-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${DATABASES_PASSWORD}
+      POSTGRES_USER: ${DATABASES_USER}
+      POSTGRES_DB: ${DATABASES_NAME}
+      PGPORT: ${DATABASES_PORT}
+      HOST: ${DATABASES_HOST}
+    ports:
+      - ${DATABASES_PORT}:${DATABASES_PORT}
+    restart: "on-failure"
+
+volumes:
+  static_volume:
+  social-networking-database-volume:

@@ -1,0 +1,23 @@
+from .base import *
+
+
+STATIC_ROOT = os.path.join(ROOT_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(ROOT_DIR, 'app_static'),
+]
+
+MEDIA_URL = config('MEDIA_URL', '/media/')
+MEDIA_DIR_NAME = 'media/'
+MEDIA_ROOT = os.path.join(ROOT_DIR, MEDIA_DIR_NAME)
+
+# CORS Configurations
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+TOKEN_COOKIE_DOMAIN = '*'
+SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_HTTPONLY = False
+SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_PATH = '/'
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
